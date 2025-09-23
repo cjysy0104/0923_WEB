@@ -15,7 +15,7 @@
 			 , #{phone}
 			 , #{address}
 			 , #{request}
-			 , #{sandwich}
+			 , #{sandwitch}
 			 , #{vegetable}
 			 , #{sauce}
 			 , #{cookie}
@@ -24,75 +24,7 @@
 			   )
 	</insert>
 
-	<resultMap id="orderResultSet"
-		type="com.kh.statement.model.vo.order">
-		<result column="USERNO" property="userNo" />
-		<result column="USERID" property="userId" />
-		<result column="USERPWD" property="userPwd" />
-		<result column="USERNAME" property="userName" />
-		<result column="EMAIL" property="email" />
-		<result column="ENROLLDATE" property="enrollDate" />
-	</resultMap>
 
-	<select id="findAll"
-		resultType="com.kh.statement.model.vo.order">
-		SELECT
-		USERNO
-		, USERID
-		, USERPWD
-		, USERNAME
-		, EMAIL
-		, ENROLLDATE
-		FROM
-		order
-		ORDER
-		BY
-		ENROLLDATE DESC
-	</select>
-
-	<select id="findById" parameterType="string"
-		resultType="com.kh.statement.model.vo.order">
-		SELECT
-		USERNO,
-		USERID,
-		USERPWD,
-		USERNAME,
-		EMAIL
-		FROM
-		order
-		WHERE
-		USERID = #{userId}
-	</select>
-	
-	<select id="findByKeyword" parameterType="string"
-			resultType="order">
-
-		SELECT
-		USERNO,
-		USERID,
-		USERPWD,
-		USERNAME,
-		EMAIL
-		FROM
-		order
-		WHERE
-		USERID LIKE '%' || #{keyword} || '%'		
-	</select>
-
-	<update id="update" parameterType="PwdDto">
-		UPDATE 
-		order
-		SET
-		USERPWD = #{newPwd}
-		WHERE USERID = #{userId}
-		AND USERPWD = #{userPwd}
-	</update>
-
-	<delete id="delete" parameterType="order">
-		DELETE FROM order
-		WHERE USERID = #{userId}
-		AND USERPWD = #{userPwd}
-	</delete>
 </mapper>
   
   

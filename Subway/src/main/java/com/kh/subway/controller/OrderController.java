@@ -52,11 +52,11 @@ public class OrderController extends HttpServlet {
 		order.setRequest(message);
 		order.setSandwitch(sandwich);
 		order.setVegetable(vegetable != null ?
-				toString().join(",", vegetable) : "선택안함");
+				String.join(",", vegetable) : "선택안함");
 		order.setSauce(sauce != null ?
-				toString().join(",", sauce) : "선택안함");
+				String.join(",", sauce) : "선택안함");
 		order.setCookie(cookie != null ?
-				toString().join(",", cookie) : "선택안함");
+				String.join(",", cookie) : "선택안함");
 		order.setSandwitch(payment);
 		
 		//System.out.println(order);

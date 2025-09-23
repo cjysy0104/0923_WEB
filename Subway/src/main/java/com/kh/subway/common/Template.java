@@ -21,6 +21,7 @@ public class Template {
 		try {
 			InputStream stream = Resources.getResourceAsStream(config);
 			sqlSession = new SqlSessionFactoryBuilder().build(stream).openSession();
+			System.out.println(sqlSession);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
