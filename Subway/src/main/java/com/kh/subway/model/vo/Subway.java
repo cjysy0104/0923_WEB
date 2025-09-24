@@ -8,7 +8,7 @@ public class Subway {
 	private String phone;
 	private String address;
 	private String request;
-	private String sandwitch;
+	private String sandwich;
 	private String vegetable;
 	private String sauce;
 	private String cookie;
@@ -19,14 +19,14 @@ public class Subway {
 		super();
 	}
 
-	public Subway(String name, String phone, String address, String request, String sandwitch, String vegetable,
+	public Subway(String name, String phone, String address, String request, String sandwich, String vegetable,
 			String sauce, String cookie, String payment, Date orderDate) {
 		super();
 		this.name = name;
 		this.phone = phone;
 		this.address = address;
 		this.request = request;
-		this.sandwitch = sandwitch;
+		this.sandwich = sandwich;
 		this.vegetable = vegetable;
 		this.sauce = sauce;
 		this.cookie = cookie;
@@ -67,11 +67,11 @@ public class Subway {
 	}
 
 	public String getSandwitch() {
-		return sandwitch;
+		return sandwich;
 	}
 
-	public void setSandwitch(String sandwitch) {
-		this.sandwitch = sandwitch;
+	public void setSandwitch(String sandwich) {
+		this.sandwich = sandwich;
 	}
 
 	public String getVegetable() {
@@ -119,13 +119,13 @@ public class Subway {
 	@Override
 	public String toString() {
 		return "Subway [name=" + name + ", phone=" + phone + ", address=" + address + ", request=" + request
-				+ ", sandwitch=" + sandwitch + ", vegetable=" + vegetable + ", sauce=" + sauce + ", cookie=" + cookie
+				+ ", sandwitch=" + sandwich + ", vegetable=" + vegetable + ", sauce=" + sauce + ", cookie=" + cookie
 				+ ", payment=" + payment + ", orderDate=" + orderDate + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, cookie, name, orderDate, payment, phone, request, sandwitch, sauce, vegetable);
+		return Objects.hash(address, cookie, name, orderDate, payment, phone, request, sandwich, sauce, vegetable);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class Subway {
 		return Objects.equals(address, other.address) && Objects.equals(cookie, other.cookie)
 				&& Objects.equals(name, other.name) && Objects.equals(orderDate, other.orderDate)
 				&& Objects.equals(payment, other.payment) && Objects.equals(phone, other.phone)
-				&& Objects.equals(request, other.request) && Objects.equals(sandwitch, other.sandwitch)
+				&& Objects.equals(request, other.request) && Objects.equals(sandwich, other.sandwich)
 				&& Objects.equals(sauce, other.sauce) && Objects.equals(vegetable, other.vegetable);
 	}
 	

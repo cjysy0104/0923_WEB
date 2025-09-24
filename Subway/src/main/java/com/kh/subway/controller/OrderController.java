@@ -2,6 +2,7 @@ package com.kh.subway.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +58,7 @@ public class OrderController extends HttpServlet {
 				String.join(",", sauce) : "선택안함");
 		order.setCookie(cookie != null ?
 				String.join(",", cookie) : "선택안함");
-		order.setSandwitch(payment);
+		order.setPayment(payment);
 		
 		//System.out.println(order);
 	
@@ -66,7 +67,22 @@ public class OrderController extends HttpServlet {
 		
 	// 4) 응답결과 출력
 		if(result > 0) {
-			response.getWriter().append("sucess :)");
+			//response.getWriter().append("sucess :)");
+			
+		// 해야 할 일
+			
+		// 1. 사용자에게 응답 시 출력해줄 데이터가 있다면
+		// 어딘가의 속성으로 추가해주기
+			
+			// request객체의 Attribute로 세팅
+			request.setAttribute("order", order);
+			
+		// 2. 응답 뷰 지정
+			
+			RequestDispatcher view = request.getRequestDispatcher("/views/result.jsp");
+			
+			view.forward(request, response);
+			
 		} else {
 			response.getWriter().append("fail :(");
 		}
