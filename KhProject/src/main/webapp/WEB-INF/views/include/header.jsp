@@ -114,7 +114,13 @@ footer {
           	로그인 후 : 내정보 / 로그아웃 메뉴만 띄우기
           	=> choose otherwise 써야지 => 라이브러리 적용하기(taglib)
            	-->
-
+           	<!-- 
+           	★★★★html 주석때문에 500에러 생기는 이유
+           	SSR(Server Side Rendering)
+           	주석처리를 하고싶다면 HTML주석이 아닌 
+           	다음과 같이 JSP주석 처리할것
+           	-->
+					<%-- <c:when> 이 주석은 500 에러가 안뜸 --%>
 					<c:choose>
 						<c:when test="${ empty sessionScope.userInfo }">
 
