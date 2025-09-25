@@ -11,8 +11,9 @@
 		<!-- NULL 반드시 대문자로 -->
 	</settings>
 
+	<!-- typeAliases 별칭 정하는 곳 -->
 	<typeAliases>
-	
+		<typeAlias alias="MemberVO" type="com.kh.java.member.model.vo.Member" />
 	</typeAliases>
 	
 	<environments default="developement">
