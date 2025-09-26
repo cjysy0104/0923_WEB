@@ -134,7 +134,7 @@ footer {
 							<li class="nav-item"><a class="nav-link js-scroll-trigger"
 								href="myPage">내정보</a></li>
 							<li class="nav-item"><a class="nav-link js-scroll-trigger"
-								href="logout" onclick="return confirm('진짜로 로그아웃 하려고?')">로그아웃</a>
+								href="logout" onclick="return confirm('로그아웃하시겠습니까?')">로그아웃</a>
 							</li>
 						</c:otherwise>
 					</c:choose>
