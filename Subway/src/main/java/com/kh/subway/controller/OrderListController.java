@@ -39,7 +39,7 @@ public class OrderListController extends HttpServlet {
 		request.setAttribute("orders", orderList);
 		
 		// 4) 응답 결과 출력
-		request.getRequestDispatcher("/views/list.jsp")
+		request.getRequestDispatcher("/WEB-INF/views/list.jsp")
 			   .forward(request, response);
 		
 	}
