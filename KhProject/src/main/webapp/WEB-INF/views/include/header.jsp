@@ -86,6 +86,13 @@ footer {
 
 <body id="page-top">
 
+	<!-- (로그인 성공 등 시에) alertMsg있으면 띄우기-->
+	<c:if test="${ not empty alertMsg}">
+		<script>
+			alert("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-light fixed-top"
 		id="mainNav">
@@ -146,6 +153,8 @@ footer {
 	<br>
 	<br>
 	<br>
+
+
 
 
 

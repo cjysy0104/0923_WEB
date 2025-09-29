@@ -28,48 +28,77 @@
 		   	   STATUS = 'Y'
 	
 	</select>
-
-<!--  
-	<insert id="insertOrder"
-		parameterType="com.kh.subway.model.vo.Subway">
-		INSERT 
-		  INTO 
-			   TB_SUBWAY
-			   VALUES
-			   (
-			   #{name}
-			 , #{phone}
-			 , #{address}
-			 , #{request}
-			 , #{sandwich}
-			 , #{vegetable}
-			 , #{sauce}
-			 , #{cookie}
-			 , #{payment}
-			 , SYSDATE
-			   )
+	
+	<insert id="signUp"
+			parameterType="MemberVO">
+	
+			INSERT
+			  INTO 
+			  	   KH_MEMBER
+			  	   (
+			  	    USER_NO 
+			 	  , USER_ID 
+			 	  , USER_PWD 
+			 	  , USER_NAME
+			 	  , EMAIL
+			  	   )
+			VALUES 
+				   (
+				   KH_UNO.NEXTVAL
+				 , #{userId}
+				 , #{userPwd}
+				 , #{userName}
+				 , #{email}
+				   )	   
+	
 	</insert>
 	
-	<select id="findAll"
-			resultType="com.kh.subway.model.vo.Subway">
-		SELECT 
-			   NAME
-			 , PHONE
-			 , ADDRESS
-			 , REQUEST
-			 , SANDWICH
-			 , VEGETABLE
-			 , SAUCE
-			 , COOKIE
-			 , PAYMENT
-			 , ORDER_DATE orderDate
-		  FROM 
-		  	   TB_SUBWAY
-		 ORDER
-		 	BY
-		 	   orderDate DESC
-	</select>
--->
+	<update id="updateMember">
+	
+		UPDATE 
+			   KH_MEMBER
+		   SET 
+		   	   
+		   	   USER_NAME = #{userName}
+		   	 , EMAIL = #{email}
+		   	 , MODIFY_DATE = SYSDATE
+		   	   
+		 WHERE 
+		 	   USER_NO = #{userNo}
+		   AND 
+		   	   STATUS = 'Y' 
+	</update>	 
+		   
+	<update id="deleteMember">
+	
+		UPDATE 
+			   KH_MEMBER
+		   SET 
+		   	   STATUS = 'N'
+		   	 , MODIFY_DATE = SYSDATE
+		 WHERE 
+		 	   USER_NO = #{userNo}
+		   AND 
+			   USER_PWD = #{userPwd}
+		   AND 
+		   	   STATUS = 'Y'
+	</update>	 
+		   
+	<update id="updatePwd">
+	
+		UPDATE 
+			   KH_MEMBER
+		   SET 
+		   	   USER_PWD = ${updatePwd}
+		   	 , MODIFY_DATE = SYSDATE
+		 WHERE 
+		 	   USER_NO = #{userNo}
+		   AND 
+			   USER_PWD = #{userPwd}
+		   AND 
+		   	   STATUS = 'Y'
+	</update>	 	   
+
 
 </mapper>
   

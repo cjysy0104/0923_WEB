@@ -1,5 +1,7 @@
 package com.kh.java.member.model.service;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.common.Template;
@@ -17,6 +19,8 @@ public class MemberService {
 		
 		
 		Member loginMember = md.login(sqlSession, member);
+		
+		sqlSession.close();
 
 		return loginMember;
 	}
@@ -34,4 +38,64 @@ public class MemberService {
 		
 	}
 	// 비밀번호 검증 로직: 하나의 클래스는 하나의 기능만 담당해하므로 빼서 다른파일 사용해야함
+
+	public int signUp(Member member) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.signUp(sqlSession, member);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+	}
+
+	public int updateMember(Map<String, String> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.updateMember(sqlSession, map);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+	}
+
+	public int deleteMember(Member member) {
+
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.deleteMember(sqlSession, member);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+	}
+
+	public int updatePwd(Map<String, String> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.updatePwd(sqlSession, map);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+	}
 }

@@ -72,19 +72,31 @@ public class LoginController extends HttpServlet {
 			// => 현재 요청보내는 Client의 Session : request.getSession();
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", loginMember);
+			//System.out.println(session.getAttribute("userInfo"));
 			
 			// 2. RequestDispatcher get해오기
+			/*
 			request.getRequestDispatcher("/index.jsp")
 					.forward(request, response);
+			*/
 			
-			//System.out.println(session.getAttribute("userInfo"));
+			// localhost:4000/kh
+			// sendRedirect : Client에게 URL을 다시 요청하게 함
+			// response.sendRedirect("/다시 요청 보낼 URL 경로");
+			
+			// request.setAttribute("msg", "로그인에 실패했습니다."); --> 개념적으론 request가 맞으나 해당 시점에서 request가 끝나고 새로운 request response기 때문에 sesion으로 작성
+			
+			session.setAttribute("alertMsg", "로그인 성공");
+			
+			response.sendRedirect("/kh");
+			
 			
 			
 			
 			
 		} else {
 			// 실패한 경우 : 로그인을 실패했다 forward하고 실패패이지로 ㄱㄱ
-			request.setAttribute("msg", "로그인에 실패했습니다.");
+			request.setAttribute("msg", "로그인 실패!");
 			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
 			.forward(request, response);
 		}
