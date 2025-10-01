@@ -184,7 +184,7 @@
 			  	function validatePwd(){
 			  		
 			  		if($('#changePwd').val() != $('#checkPwd').val()){
-			  			alert('비밀번호를 동일하게 입력해주세요!');
+			  			alertify.alert('비밀번호를 동일하게 입력해주세요!');
 			  			$('#checkPwd').focus().val('');
 			  			return false;
 			  		}

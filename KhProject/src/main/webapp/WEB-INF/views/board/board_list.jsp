@@ -74,6 +74,19 @@ tr:hover{
             </div>            
          </div>
       </div>
+      <script>
+      	$(function(){
+      		
+      		$('.board').click(e => {
+      			
+      			//console.log(e.currentTarget.id);
+      			const targetId = e.currentTarget.id
+      			location.href = `detail.board?boardNo=\${targetId}`;
+      		});
+      		
+      	});
+      </script>
+      
          <div class="paging-area" align="center" >
         	
 	        	<c:if test="${ pi.currentPage gt 1 }">

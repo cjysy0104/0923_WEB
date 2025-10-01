@@ -37,6 +37,18 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"/>
+
 <style>
 #mainNav .navbar-nav .nav-item .nav-link {
 	font-weight: 600;
@@ -79,6 +91,11 @@ footer {
 .dropdown:hover>.dropdown-menu {
 	display: block;
 }
+glossary:{
+            title:'KH로그인',
+            ok: 'OK',
+            cancel: 'Cancel'            
+        
 </style>
 
 
@@ -89,7 +106,7 @@ footer {
 	<!-- (로그인 성공 등 시에) alertMsg있으면 띄우기-->
 	<c:if test="${ not empty alertMsg}">
 		<script>
-			alert("${alertMsg}");
+			alertify.alert("${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>

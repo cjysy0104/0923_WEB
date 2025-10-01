@@ -1,5 +1,6 @@
 package com.kh.java.board.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -119,7 +120,7 @@ public class BoardInsertController extends HttpServlet {
 			//System.out.println(multiRequest.getOriginalFileName("upFile"));
 			// 첨부파일 있다면 "원본파일명" / 없다면 null 반환
 			
-			if(multiRequest.getOriginalFileName("name")!=null) {
+			if(multiRequest.getOriginalFileName("upfile")!=null) {
 				// 첨부파일이 있다 => VO로 만들기
 				at = new Attachment();
 				
@@ -133,7 +134,32 @@ public class BoardInsertController extends HttpServlet {
 				at.setFilePath("resuources/board_upfiles");
 				
 				// 4) 요청처리 Service호출
-				new BoardService().insert(board, at);
+				int result = new BoardService().insert(board, at);
+				
+				
+				// 5) 응답화면 지정
+				if(result > 0) {
+					
+					session.setAttribute("alertMsg", "게시글 작성 성공");
+					
+					/*
+					request.getRequestDispatcher("/WEB-INF/views/board/board_list.jsp")
+					   .forward(request, response);
+					*/
+					
+					response.sendRedirect(request.getContextPath() + "/boards?page=1");
+					
+				} else {
+					
+					// 실패했을 경우 파일이 존재했다면 파일을 지워버리기
+					if(at != null) {
+						new File(savePath + "/" + at.getChangeName())
+							.delete();
+					}
+					request.setAttribute("msg", "게시글 작성 실패");
+					request.getRequestDispatcher("/WEB-INF/views/common/result.jsp")
+							.forward(request, response);
+				}
 			}
 		}
 	}
