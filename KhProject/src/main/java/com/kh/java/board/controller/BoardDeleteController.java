@@ -30,7 +30,7 @@ public class BoardDeleteController extends HttpServlet {
 		board.setBoardNo(boardNo);
 		board.setBoardWriter(String.valueOf(userNo));
 		
-		int result = new BoardService().deleteBaord(board);
+		int result = new BoardService().deleteBoard(board);
 		
 		if(result > 0) {
 			

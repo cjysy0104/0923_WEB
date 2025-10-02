@@ -14,33 +14,33 @@ import com.kh.java.common.Template;
 import com.kh.java.common.vo.PageInfo;
 
 public class BoardService {
-
+	
 	private BoardDao bd = new BoardDao();
 	
 	public int selectListCount() {
 		
 		SqlSession sqlSession = Template.getSqlSession();
 		
-		int listcount = bd.sessionListCount(sqlSession);
+		int listCount = bd.sessionListCount(sqlSession);
 		
 		sqlSession.close();
 		
-		return listcount;
+		return listCount;
 	}
-
-	public List<Board> selectBoardList(PageInfo pi) {
-
+	
+	public List<Board> selectBoardList(PageInfo pi){
+		
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		List<Board> boards = bd.selectBoardList(sqlSession, pi);
 		
 		sqlSession.close();
-		
+
 		return boards;
 	}
-
-	public List<Category> selectCategory() {
-
+	
+	public List<Category> selectCategory(){
+		
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		List<Category> categories = bd.selectCategory(sqlSession);
@@ -49,84 +49,188 @@ public class BoardService {
 		
 		return categories;
 	}
-
+	
 	public int insert(Board board, Attachment at) {
-
+		
 		SqlSession sqlSession = Template.getSqlSession();
 		
-		// INSERT 두번 수행
+		// INSERT를 두 번 수행
 		// BOARD 테이블에 한 번 => 무조건
 		int boardResult = bd.insertBoard(sqlSession, board);
 		// ATTACHEMTN 테이블에 한 번 => 파일이 존재할 때만 가야함
-		// keyProperty를 통해 필드에 no가 담겨져 있
 		int atResult = 1;
 		if(at != null) {
 			at.setRefBno(board.getBoardNo());
 			atResult = bd.insertAttachment(sqlSession, at);
 		}
-		//두 개의 DML구문을 하나의 트랜잭션으로 묶어서 처리
-		if( boardResult * atResult > 0) {
+		// 두 개의 DML구문을 하나의 트랜잭션으로 묶어서 처리
+		if(boardResult * atResult > 0) {
 			sqlSession.commit();
 		} else {
 			sqlSession.rollback();
 		}
-		// 트랜잭션까지 끝내고 난 후 성공실패여부를 반환
+		// 트랜잭션처리까지 끝내고 난 후 성공실패여부를 반환
 		return (boardResult * atResult);
 	}
-
+	
 	public Map<String, Object> selectBoard(int boardNo) {
-
+		
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		// SELECT 두 번 하기 + 조회수 증가
 		
 		// 총 DB에 3번 가야함
+		// UPDATE BOARD => COMMIT
 		// SELECT BOARD
-		// SELECT ATTACHMENT 우선순위 낮음
-		// UPDATE BOARD => commit했을때만 select하기: 먼저구현
-		
+		// SELECT ATTACHMENT
 		int result = bd.increaseCount(sqlSession, boardNo);
-		
 		
 		if(result > 0) {
 			sqlSession.commit();
 			Board board = bd.selectBoard(sqlSession, boardNo);
 			Attachment at = bd.selectAttachment(sqlSession, boardNo);
+			Long userNo = bd.selectBoardWriter(sqlSession, boardNo);
+			// System.out.println(board);
+			// System.out.println(at);
 			Map<String, Object> map = new HashMap();
-			//System.out.println(board);
-			//System.out.println(at);
-			 map.put("board", board);
-			 map.put("at", at);
-			 
-						
-			sqlSession.close();
-			
+			map.put("board", board);
+			map.put("at", at);
+			map.put("boardWriter", userNo);
 			return map;
 		}
-		
 		return null;
 	}
-
-	public int deleteBaord(Board board) {
+	
+	public int deleteBoard(Board board) {
 		
 		SqlSession sqlSession = Template.getSqlSession();
-		Attachment at = bd.selectAttachment(sqlSession, board.getBoardNo().intValue());
 		int result = bd.deleteBoard(sqlSession, board);
-		
+		Attachment at = bd.selectAttachment(sqlSession, board.getBoardNo().intValue());
 		int result2 = 1;
+		
 		if(at != null) {
 			result2 = bd.deleteAttachment(sqlSession, board.getBoardNo());
 		}
-		
-		if(result * result2 > 0	) {
-			
+
+		if(result * result2 > 0) {
 			sqlSession.commit();
-			
-			return 	(result * result2);
-		}		
+		} else {
+			sqlSession.rollback();
+		}
 		
-		return 0;
+		return result * result2;
 	}
+
+	public int update(Board board, Attachment at) {
+
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int boardResult = bd.updateBoard(sqlSession, board);
+		
+		// Attachment
+		// 새 첨부파일이 없을 때
+		int atResult = 1;
+		
+		// 새 첨부파일이 존재할 경우
+		if(at != null) {
+			// case 1
+			if(at.getFileNo() != null) {
+				// 기존에 첨부파일이 있다 => UPDATE
+				atResult = bd.updateAttachment(sqlSession, at);
+			} else {
+				// 기존 첨부파일이 없음 => INSERT
+				atResult = bd.insertAttachment(sqlSession, at);
+			}
+			// case 2
+			// 없으면 할 거 없음
+		}
+		
+		// 둘 다 성공하면 commit
+		// 둘 다 실패하면 rollback
+		if(boardResult * atResult > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		
+		return (boardResult * atResult);
+	}
+
+	public int searchedCount(Map<String, Object> map) {
+
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int count = bd.searchedCount(sqlSession, map);
+		
+		sqlSession.close();
+		
+		return count;
+	}
+
+	public List<Board> selectSearcheList(Map<String, Object> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		List<Board> boards = bd.selectSearcheList(sqlSession, map);
+		
+		sqlSession.close();
+		
+		return boards;
+	}
+
+	public int insertImage(Board board, List<Attachment> files) {
+
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		//보드에 INSERT하는거 만들어놨음
+		// ATTACHMENT에 INSERT하는거 만들어놧음 => 사용못함
+		
+		int result = 0;
+		
+		try {
+			// 1. 게시글 INSERT
+			result = bd.insertImageBoard(sqlSession, board);
+			
+			// 2. 게시글 INSERT가 성공 시 첨부파일 INSERT
+			if(result > 0) {
+				
+				// 첨부파일 개수만큼 INSERT
+				for(Attachment file : files) {
+					file.setRefBno(board.getBoardNo());
+					
+					result = bd.insertAttachmentList(sqlSession, file);
+					
+					if(result == 0) { // 하나라도 실패하면 result=0 바로 빠져나가게됨
+						break;
+					}
+				}
+			}
+			
+			// 3. 다 성공했으면 commit
+			if(result > 0) {
+				sqlSession.commit();
+			} else {
+				sqlSession.rollback();
+			}
+		} catch (Exception e) {
+			sqlSession.rollback();
+			e.printStackTrace();
+			result = 0;
+		} finally {
+			sqlSession.close();
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

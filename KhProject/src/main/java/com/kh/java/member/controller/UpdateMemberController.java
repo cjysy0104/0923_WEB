@@ -22,58 +22,73 @@ public class UpdateMemberController extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// post
+		// 1) GET ? POST ?
+		// POST => 인코딩
 		request.setCharacterEncoding("UTF-8");
 		
-		// parameter
+		// 2) 요청 시 전달 값 뽑기
+		// userName, email
 		String userName = request.getParameter("userName");
 		String email = request.getParameter("email");
 		
-		// data processing
-		/*
-		Map<String, String> map = Map.of(
-										"userName", userName,
-										"email", email);
-										
-		//System.out.println(map);
-		*/
-		
-		HttpSession session =  request.getSession();
+		// 2_2) 세션에서 값 뽑기
+		HttpSession session = request.getSession();
 		Member member = (Member)session.getAttribute("userInfo");
-		Long userNo = ((Member)session.getAttribute("userInfo")).getUserNo();
+		Long userNo = member.getUserNo();
 		
+		// Long l = ((Member)session.getAttribute("userInfo"))
+		// 					        .getUserNo();
+		
+		
+		// 3) 어따담기
+		/*
+		Map<String, String> map = new HashMap();
+		map.put("userName", userName);
+		map.put("email", email);
+		
+		Map.of() : K-V 10개까지 초기화 가능
+				   불변맵 반환
+		*/
 		Map<String, String> map = Map.of(
-									"userName", userName,
-									"email", email,
-									"userNo", String.valueOf(userNo));
-		// service call
-		int result = new MemberService().updateMember(map);
-			
+								  "userName", userName,
+								  "email", email,
+								  "userNo", String.valueOf(userNo));
+		// System.out.println(map);
+		// System.out.println(request.getParameter("userId"));
+		
+		// 4) 요청처리 -> Service
+		// 개발자 == 자격 X
+		int result = new MemberService().update(map);
+		
+		// 5) 결과값에 따라서 응답화면 지정
 		if(result > 0) {
-			// 문제점
-			// DB상 Update 성공
-			// but, session의 userInfo 키값은
-			// 로그인 당시 갱신했던 필드값이 그대로 존재
-			// View단에 넘어오면 그 전 값들이 조회가 됨
 			
-			// => 목표: 1. DB가서 갱신된 회원정보 갖고와서 2. userInfo 덮어씌우기
+			// 우리에게 생긴 문제점
+			
+			// Update에 성공했는데
+			// session의 userInfo키 값에는
+			// 로그인 당시 / 마이페이지 포워딩 당시 조회했던
+			// 값들이 필드에 담겨 있기 때문에
+			// Update 수행 전 값들이 마이페이지에서 출력됨
+			
+			// 목표 => DB가서 갱신된 회원정보 들고오기
+			//     => 들고온 회원정보 userInfo로 덮어씌우기
 			
 			/*
-			Member loginIfo = new MemberService().login(member);
-			session.setAttribute("userInfo", loginIfo);
-			// VIEW단을 위한 session 최신정보 갱신
+			Member loginInfo = new MemberService().login(member);
+			session.setAttribute("userInfo", loginInfo);
 			request.getRequestDispatcher("/WEB-INF/views/member/my_page.jsp")
-			.forward(request, response);
+				   .forward(request, response);
 			*/
 			// sendRedirect
 			// /kh/myPage
-			session.setAttribute("alertMsg", "회원정보 수정 성공!");
-			response.sendRedirect(request.getContextPath()+"/myPage");
+			session.setAttribute("alertMsg", "정보 변경 성공!");
+			response.sendRedirect(request.getContextPath() + "/myPage");
+			
 		} else {
-			request.setAttribute("msg", "정보수정 실패");
-			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
-					.forward(request, response);
+			request.setAttribute("msg", "정보 수정에 실패했습니다.");
+			request.getRequestDispatcher("/WEB-INF/views/common/fail_page.jsp")
+				   .forward(request, response);
 		}
 		
 	}

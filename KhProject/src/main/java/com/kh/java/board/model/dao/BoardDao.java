@@ -1,6 +1,7 @@
 package com.kh.java.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -33,7 +34,7 @@ public class BoardDao {
 
 	public int insertAttachment(SqlSession sqlSession, Attachment at) {
 
-		return sqlSession.insert("boardMapper.insertAttachment", at);
+		return sqlSession.insert("boardMapper.insertAttchment", at);
 	}
 
 	public int increaseCount(SqlSession sqlSession, int boardNo) {
@@ -53,7 +54,7 @@ public class BoardDao {
 
 	public Long selectBoardWriter(SqlSession sqlSession, int boardNo) {
 		
-		return sqlSession.selectOne("boardMapper.selectBoardWirter", boardNo);
+		return sqlSession.selectOne("boardMapper.selectBoardWriter", boardNo);
 	}
 
 	public int deleteBoard(SqlSession sqlSession, Board board) {
@@ -65,5 +66,36 @@ public class BoardDao {
 		
 		return sqlSession.update("boardMapper.deleteAttachment", boardNo);
 		
+	}
+
+	public int updateBoard(SqlSession sqlSession, Board board) {
+
+		return sqlSession.update("boardMapper.updateBoard", board);
+	}
+
+	public int updateAttachment(SqlSession sqlSession, Attachment at) {
+
+		return sqlSession.update("boardMapper.updateAttachment", at);
+	}
+
+	public int searchedCount(SqlSession sqlSession, Map<String, Object> map) {
+
+		return sqlSession.selectOne("boardMapper.searchedCount", map);
+	}
+
+	public List<Board> selectSearcheList(SqlSession sqlSession, Map<String, Object> map) {
+		
+		return sqlSession.selectList("boardMapper.selectSearcheList", map);
+
+	}
+
+	public int insertImageBoard(SqlSession sqlSession, Board board) {
+
+		return sqlSession.insert("boardMapper.insertImageBoard", board);
+	}
+
+	public int insertAttachmentList(SqlSession sqlSession, Attachment file) {
+
+		return sqlSession.insert("boardMapper.insertAttachmentList", file);
 	}
 }
