@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
+import com.kh.java.board.model.vo.Reply;
 import com.kh.java.common.vo.PageInfo;
 
 public class BoardDao {
@@ -97,5 +98,15 @@ public class BoardDao {
 	public int insertAttachmentList(SqlSession sqlSession, Attachment file) {
 
 		return sqlSession.insert("boardMapper.insertAttachmentList", file);
+	}
+
+	public int insertReply(SqlSession sqlSession, Reply reply) {
+
+		return sqlSession.insert("boardMapper.insertReply", reply);
+	}
+
+	public List<Reply> selectReply(SqlSession sqlSession, Long boardNo) {
+
+		return sqlSession.selectList("boardMapper.selectReply", boardNo);
 	}
 }

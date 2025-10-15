@@ -82,6 +82,7 @@ public class MemberService {
 	}
 	
 	public int updatePwd(Map<String, String> map) {
+		
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		int result = md.updatePwd(sqlSession, map);
@@ -89,6 +90,17 @@ public class MemberService {
 		if(result > 0) {
 			sqlSession.commit();
 		}
+		sqlSession.close();
+		
+		return result;
+	}
+
+	public String checkId(String id) {
+
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		String result = md.checkId(sqlSession, id);
+		
 		sqlSession.close();
 		
 		return result;

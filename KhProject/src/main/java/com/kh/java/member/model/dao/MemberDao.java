@@ -28,6 +28,10 @@ public class MemberDao {
 	public int updatePwd(SqlSession sqlSession, Map<String, String> map) {
 		return sqlSession.update("memberMapper.updatePwd", map);
 	}
+
+	public String checkId(SqlSession sqlSession, String id) {
+		return sqlSession.selectOne("memberMapper.checkId", id);
+	}
 	
 	
 	

@@ -392,6 +392,45 @@
 			 ,	'Y'
 				)
 	</insert>
+	
+	<insert id="insertReply"
+			parameterType="com.kh.java.board.model.vo.Reply">
+		INSERT
+		INTO
+				KH_REPLY
+				(
+				REPLY_NO
+				, REF_BNO
+				, REPLY_CONTENT
+				, REPLY_WRITER
+				)
+		VALUES
+				(
+				SEQ_RNO.NEXTVAL
+				, #{refBno}
+				, #{replyContent}
+				, #{replyWriter}
+				)
+	</insert>
+	
+	<select id="selectReply"
+			resultType="com.kh.java.board.model.vo.Reply">
+		SELECT
+				  REPLY_NO		replyNo
+				, REPLY_CONTENT replyContent
+				, USER_ID		replyWriter
+		  FROM
+				KH_REPLY
+		  JOIN
+		  		KH_MEMBER ON (REPLY_WRITER = USER_NO)
+		 WHERE	
+				STATUS = 'Y'
+		   AND	
+				REF_BNO = #{boardNo}
+		 ORDER
+			BY
+				CREATE_DATE DESC
+	</select>
 </mapper>
   
   
